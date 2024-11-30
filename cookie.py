@@ -114,18 +114,17 @@ def update_token(suno_cookie: SunoCookie):
 
 
 def keep_alive(suno_cookie: SunoCookie):
-    interval = suno_cookie.get_expire_at() - int(time.time() * 1000)
+    expire_at = suno_cookie.get_expire_at()
+    if expire_at is None:
+        logger.error("Expire time is not set")
+        return
+
+    interval = expire_at - int(time.time() * 1000)
     if interval < 0:
         notify(
-            f"email: {suno_cookie.get_email()} suno cookie has expired at {datetime.datetime.fromtimestamp(suno_cookie.get_expire_at()/1000).strftime('%Y-%m-%d %H:%M:%S')}, please update"
+            f"email: {suno_cookie.get_email()} suno cookie has expired at {datetime.datetime.fromtimestamp(expire_at/1000).strftime('%Y-%m-%d %H:%M:%S')}, please update"
         )
     elif interval < 60 * 60 * 24 * 1000:
         notify(
-            f"email: {suno_cookie.get_email()} suno cookie will expire at {datetime.datetime.fromtimestamp(suno_cookie.get_expire_at()/1000).strftime('%Y-%m-%d %H:%M:%S')}, please update"
-        )
-    try:
-        update_token(suno_cookie)
-    except Exception as e:
-        logger.error(
-            f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')} *** keep_alive error -> {e} ***"
+            f"email: {suno_cookie.get_email()} suno cookie will expire soon at {datetime.datetime.fromtimestamp(expire_at/1000).strftime('%Y-%m-%d %H:%M:%S')}"
         )
