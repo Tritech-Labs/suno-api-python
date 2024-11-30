@@ -59,7 +59,12 @@ def fetch_session_id(suno_cookie: SunoCookie):
     headers.update(COMMON_HEADERS)
     resp = requests.get(CLERK_BASE_URL, headers=headers, timeout=5)
     session_id = resp.json().get("response").get("last_active_session_id")
-    expire_at = resp.json().get("response").get("sessions")[0]["expire_at"]
+    # expire_at = resp.json().get("response").get("sessions")[0]["expire_at"]
+    sessions = resp.json().get("response").get("sessions")
+    if len(sessions) > 0:
+        expire_at = sessions[0].get("expire_at")
+    else:
+        expire_at = None  # or handle the case where there are no sessions
     email = (
         resp.json()
         .get("response")
