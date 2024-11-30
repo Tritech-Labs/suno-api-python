@@ -61,10 +61,12 @@ def fetch_session_id(suno_cookie: SunoCookie):
     session_id = resp.json().get("response").get("last_active_session_id")
     # expire_at = resp.json().get("response").get("sessions")[0]["expire_at"]
     sessions = resp.json().get("response").get("sessions")
-    if len(sessions) > 0:
-        expire_at = sessions[0].get("expire_at")
-    else:
-        expire_at = None  # or handle the case where there are no sessions
+
+    if not sessions:
+        logger.error("No sessions found in the response")
+        return
+    
+    expire_at = None  # or handle the case where there are no sessions
     email = (
         resp.json()
         .get("response")
@@ -98,6 +100,12 @@ def update_token(suno_cookie: SunoCookie):
     resp_headers = dict(resp.headers)
     set_cookie = resp_headers.get("Set-Cookie")
     suno_cookie.load_cookie(set_cookie)
+    sessions = resp.json().get("sessions", [])
+
+    if not sessions:
+        logger.error("No sessions found in the response")
+        return
+
     token = resp.json()["sessions"][0]["last_active_token"]["jwt"]
     if not token:
         logger.error(f"update token failed, response -> {resp.json()}")
