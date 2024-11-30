@@ -83,6 +83,7 @@ def fetch_session_id(suno_cookie: SunoCookie):
     )
 
 
+
 fetch_session_id(suno_auth)
 
 
@@ -128,3 +129,10 @@ def keep_alive(suno_cookie: SunoCookie):
         notify(
             f"email: {suno_cookie.get_email()} suno cookie will expire soon at {datetime.datetime.fromtimestamp(expire_at/1000).strftime('%Y-%m-%d %H:%M:%S')}"
         )
+
+        try:
+            update_token(suno_cookie)
+        except Exception as e:
+            logger.error(
+                f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')} *** keep_alive error -> {e} ***"
+            )
