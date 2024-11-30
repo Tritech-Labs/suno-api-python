@@ -66,7 +66,7 @@ def fetch_session_id(suno_cookie: SunoCookie):
         logger.error("No sessions found in the response")
         return
     
-    expire_at = None  # or handle the case where there are no sessions
+    expire_at = sessions[0].get("expire_at")    
     email = (
         resp.json()
         .get("response")
