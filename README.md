@@ -17,7 +17,7 @@ Github: [https://github.com/gochendong/suno-api](https://github.com/gochendong/b
 
 ## Install
 
-1. from F12 Network https://clerk.suno.com/v1/client?xxx. fetch Cookie and edit the `.env.example` file, rename to `.env` and fill in cookie.
+1. From https://surl.id/1uHHTdiT2F fetch SUNO Application TOKEN and edit the `.env.example` file, rename to `.env` and fill in cookie.
 
 2. Start the service
     ```
