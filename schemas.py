@@ -32,7 +32,7 @@ class DescriptionModeGenerateParam(BaseModel):
     """Generate with Song Description"""
 
     gpt_description_prompt: str
-    make_instrumental: bool = False
+    make_instrumental: bool = True
     mv: str = Field(
         default="chirp-v4",
         description="model version, default: chirp-v4",
