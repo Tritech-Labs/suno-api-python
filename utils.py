@@ -80,6 +80,7 @@ async def generate_music_with_prompt(data, token):
         "model": data["mv"],
         "prompt": data["gpt_description_prompt"],
         "custom": False,
+        "instrumental": True,
         "callback_url": "true",
     }
     response = await fetch(api_url, headers, payload)
