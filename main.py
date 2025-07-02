@@ -8,6 +8,7 @@ from utils import (
     generate_music_with_prompt,
     generate_music_with_lyrics,
     get_feed_by_clip_id,
+    get_feed_by_task_id,
     get_lyrics,
     concat_music,
 )
@@ -51,6 +52,7 @@ async def generate_with_song_description(
         resp = await generate_music_with_prompt(data.dict(), token)
         return resp
     except Exception as e:
+        print("Error in generate:", e)
         raise HTTPException(
             detail=str(e), status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
@@ -66,6 +68,11 @@ async def fetch_feed(aid: str, token: str = Depends(get_token)):
             detail=str(e), status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
 
+@app.get("/feed/task/{task_id}")
+async def fetch_feed_by_task(task_id: str, token: str = Depends(get_token)):
+    try:
+        resp = await get_feed_by_task_id(task_id, token)
+        return resp
 
 @app.post("/generate/lyrics/")
 async def generate_lyrics_post(

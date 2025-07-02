@@ -84,6 +84,8 @@ async def generate_music_with_prompt(data, token):
         "callback_url": "true",
     }
     response = await fetch(api_url, headers, payload)
+    print(f"Generate response: {response}")
+
     res = await get_clip_id(response, token)
     if res:
         return res
