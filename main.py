@@ -73,6 +73,10 @@ async def fetch_feed_by_task(task_id: str, token: str = Depends(get_token)):
     try:
         resp = await get_feed_by_task_id(task_id, token)
         return resp
+    except Exception as e:
+        raise HTTPException(
+            detail=str(e), status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
 
 @app.post("/generate/lyrics/")
 async def generate_lyrics_post(

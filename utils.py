@@ -52,6 +52,13 @@ async def get_feed_by_clip_id(clip_id, token):
                 if clip.get("id"):
                     return [clip]
 
+async def get_feed_by_task_id(task_id, token):
+    if task_id:
+        feed = await get_feed(task_id, token)
+        if feed and feed.get("response") and feed.get("response").get("data"):
+            for clip in feed.get("response").get("data"):
+                if clip.get("id"):
+                    return [clip]
 
 async def generate_music_with_lyrics(data, token):
     headers = {"Authorization": f"Bearer {token}"}
